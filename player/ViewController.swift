@@ -210,10 +210,13 @@ extension ViewController {
     }
     
     @objc func playerItemDidReachEnd(notification: Notification) {  // 播放结束的处理
-        if let player:AVPlayer = self.playerView?.playerLayer.player {
-            let dragedCMTime = CMTimeMake(value: 0, timescale: 1)
-            player.seek(to: dragedCMTime, toleranceBefore: .zero, toleranceAfter: .zero)
-            player.play()
+        reset()
+        
+        DispatchQueue.main.async {
+            if let player:AVPlayer = self.playerView?.playerLayer.player {
+                player.seek(to: .zero)
+                player.play()
+            }
         }
     }
 }
