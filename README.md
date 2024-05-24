@@ -11,10 +11,11 @@ pod 'SwiftSubtitles', :git => "https://bgithub.xyz/DuanSesion/musicsubtitle.git"
 
 
 # demo
-<video src="Videos/RPReplay_Final1716529431.mp4" autoplay="true" controls="controls" width="800" height="600">3</video>
+<p align="center">
+<video src="https://raw.githubusercontent.com/DuanSesion/musicsubtitle/master/Videos/RPReplay_Final1716529431.mp4" autoplay="true" controls="controls" width="800" height="600"> Your browser does not support the video tag. </video>
 
 <video width="320" height="240" controls>
-  <source src="Videos/RPReplay_Final1716529431.mp4" type="video/mp4">
+  <source src="https://raw.githubusercontent.com/DuanSesion/musicsubtitle/master/Videos/RPReplay_Final1716529431.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
- 
+</p>
