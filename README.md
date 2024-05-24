@@ -20,9 +20,4 @@ pod 'SwiftSubtitles', :git => "https://bgithub.xyz/DuanSesion/musicsubtitle.git"
 </p>
 
 
-<p align="center">
-<video width="320" height="240" controls>
-  <source src="https://raw.githubusercontent.com/DuanSesion/musicsubtitle/master/Videos/RPReplay_Final1716529431.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-</p>
+![(Video)](https://raw.githubusercontent.com/DuanSesion/musicsubtitle/master/Videos/RPReplay_Final1716529431.mp4)
