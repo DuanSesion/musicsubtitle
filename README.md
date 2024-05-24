@@ -6,4 +6,6 @@ music audio or video subtitle (xx.srt,xx.csv,xx.json,xx.sbv,xx.sub,xx.vtt)
 pod 'SwiftSubtitles', :git => "https://bgithub.xyz/DuanSesion/musicsubtitle.git"
 
 # demo
-<iframe width="560" height="315" src="file:///Video/RPReplay_Final1716529431.MP4" frameborder="0" allowfullscreen></iframe>
+<video src="/Video/RPReplay_Final1716529431.MP4"></video>
+<video src="/Video/RPReplay_Final1716529431.MP4" autoplay="true" controls="controls" width="800" height="600"></video>
+
