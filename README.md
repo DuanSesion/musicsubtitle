@@ -3,11 +3,15 @@ music audio or video subtitle (xx.srt,xx.csv,xx.json,xx.sbv,xx.sub,xx.vtt)
 播放 音乐，视频，字幕跟踪及动画
 
 # pod git
+pod 'SwiftSubtitles', :git => "https://github.com/DuanSesion/musicsubtitle.git" 
+
+or
+
 pod 'SwiftSubtitles', :git => "https://bgithub.xyz/DuanSesion/musicsubtitle.git"
-<video src="Videos/RPReplay_Final1716529431.mp4">2</video>
+
 
 # demo
-<video src="/Videos/RPReplay_Final1716529431.mp4" autoplay="true" controls="controls" width="800" height="600">3</video>
+<video src="Videos/RPReplay_Final1716529431.mp4" autoplay="true" controls="controls" width="800" height="600">3</video>
 
 <video width="320" height="240" controls>
   <source src="Videos/RPReplay_Final1716529431.mp4" type="video/mp4">
