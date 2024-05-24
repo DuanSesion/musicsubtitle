@@ -221,24 +221,39 @@ extension ViewController {
     
     func observeCurrentItemChanges(_ queuePlayer:AVQueuePlayer) {
         // 当前播放项目的观察者
-        let currentItemObserver = queuePlayer.observe(\.currentItem, options: [.new, .initial]) { [weak self] (qPlayer, change) in
-            if let newItem = change.newValue {
+        let currentItemObserver = queuePlayer.observe(\.currentItem, options: [.new]) { [weak self] (qPlayer, change) in
+            self?.reset()
+            if change.newValue  == nil {
+                guard let url = Bundle.main.path(forResource: "Charlie Puth-Look At Me Now", ofType: "mp3") else { return  }
+                let avsset = AVAsset(url: URL(fileURLWithPath: url))
+                let playerItem = AVPlayerItem(asset: avsset, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
+                
+                let avsset1 = AVAsset(url: URL(fileURLWithPath: url))
+                let playerItem1 = AVPlayerItem(asset: avsset1, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
+                
+                if qPlayer.canInsert(playerItem, after: nil) {
+                    qPlayer.insert(playerItem, after: nil)
+                }
+                 
+                if qPlayer.canInsert(playerItem1, after: nil) {
+                    qPlayer.insert(playerItem1, after: nil)
+                }
+                
+             
+            } else if let newItem = change.newValue {
                 // 新的播放项目开始播放，检查是否为最后一个项目
                 let newItem:AVPlayerItem = newItem!
                 if newItem == queuePlayer.items().last {
                     if let firstItem = queuePlayer.items().first {
                         // 如果是最后一个项目，当它即将结束时重新排列播放队列以实现循环
                         DispatchQueue.main.asyncAfter(deadline: .now() + (newItem.asset.duration.seconds - queuePlayer.currentTime().seconds)) {
-                            if queuePlayer.canInsert(newItem, after: firstItem) {
-                                queuePlayer.insert(newItem, after: firstItem)
+                            if queuePlayer.canInsert(newItem, after: nil) {
+                                queuePlayer.insert(newItem, after: nil)
                                 queuePlayer.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
                                 queuePlayer.play()
-                                self?.reset()
                             }
-
                         }
                     }
-   
                 }
             }
         }
