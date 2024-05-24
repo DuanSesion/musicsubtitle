@@ -17,7 +17,7 @@ pod 'SwiftSubtitles', :git => "https://bgithub.xyz/DuanSesion/musicsubtitle.git"
 
 <p align="center">
     <video width="800" height="600" controls autoplay>
-      <source src="https://raw.githubusercontent.com/DuanSesion/musicsubtitle/master/Videos/RPReplay_Final1716529431.mp4" type="video/mp4">
+      <source src="https://github.com/DuanSesion/musicsubtitle/blob/main/Videos/RPReplay_Final1716529431.mp4" type="video/mp4">
       您的浏览器不支持视频播放。
     </video>
 </p>
