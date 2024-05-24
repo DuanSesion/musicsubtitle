@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     private var subtitles:Subtitles!
     private var currentSubtitleIndex:Int = 0
     let dispatch_queue:dispatch_queue_t = .init(label: "play.progress.subtitles.cue")
+    private var currentItemObserver:NSKeyValueObservation?
     
     
     lazy var label: SubtitleLabel = {
@@ -67,7 +68,12 @@ class ViewController: UIViewController {
         guard let url = Bundle.main.path(forResource: "Charlie Puth-Look At Me Now", ofType: "mp3") else { return  }
         let avsset = AVAsset(url: URL(fileURLWithPath: url))
         let playerItem = AVPlayerItem(asset: avsset, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
-        let player = AVQueuePlayer(playerItem: playerItem)
+        
+        let avsset1 = AVAsset(url: URL(fileURLWithPath: url))
+        let playerItem1 = AVPlayerItem(asset: avsset1, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
+        
+        
+        let player = AVQueuePlayer(items: [playerItem,playerItem1])
         playerView.playerLayer.player = player
         
         for track in playerItem.tracks {
@@ -84,13 +90,15 @@ class ViewController: UIViewController {
         player.allowsExternalPlayback = true
         
         player.play()
-        addObserverPlayerItemDidReachEnd(player)
+//        addObserverPlayerItemDidReachEnd(player)
+        observeCurrentItemChanges(player)
         
         
         guard let url = Bundle.main.path(forResource: "5月23日", ofType: "srt") else { return  }
         guard let model:Subtitles = try? Subtitles.init(fileURL: URL(fileURLWithPath: url), encoding: .ascii) else { return  }
         self.subtitles = model
         addProgressObserver(player)
+        
         
         oldLabel.snp.makeConstraints { make in
             make.edges.equalTo(label)
@@ -167,6 +175,14 @@ extension ViewController {
             self.playerView?.playerLayer.player?.removeTimeObserver(timeObserverToken)
             self.timeObserverToken = nil
         }
+        
+        if let queuePlayer:AVQueuePlayer = self.playerView?.playerLayer.player as? AVQueuePlayer {
+            queuePlayer.removeObserver(self, forKeyPath: #keyPath(AVQueuePlayer.currentItem))
+        }
+        
+        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        currentItemObserver?.invalidate()
+
     }
 }
 
@@ -202,22 +218,45 @@ extension ViewController {
 }
 
 extension ViewController {
+    
+    func observeCurrentItemChanges(_ queuePlayer:AVQueuePlayer) {
+        // 当前播放项目的观察者
+        let currentItemObserver = queuePlayer.observe(\.currentItem, options: [.new, .initial]) { [weak self] (qPlayer, change) in
+            if let newItem = change.newValue {
+                // 新的播放项目开始播放，检查是否为最后一个项目
+                let newItem:AVPlayerItem = newItem!
+                if newItem == queuePlayer.items().last {
+                    if let firstItem = queuePlayer.items().first {
+                        // 如果是最后一个项目，当它即将结束时重新排列播放队列以实现循环
+                        DispatchQueue.main.asyncAfter(deadline: .now() + (newItem.asset.duration.seconds - queuePlayer.currentTime().seconds)) {
+                            if queuePlayer.canInsert(newItem, after: firstItem) {
+                                queuePlayer.insert(newItem, after: firstItem)
+                                queuePlayer.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
+                                queuePlayer.play()
+                                self?.reset()
+                            }
+
+                        }
+                    }
+   
+                }
+            }
+        }
+        self.currentItemObserver = currentItemObserver
+    }
+        
     func addObserverPlayerItemDidReachEnd(_ player:AVPlayer) {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(playerItemDidReachEnd),
                                                name: .AVPlayerItemDidPlayToEndTime,
                                                object: player.currentItem)
+        
+        
     }
     
     @objc func playerItemDidReachEnd(notification: Notification) {  // 播放结束的处理
         reset()
-        
-        DispatchQueue.main.async {
-            if let player:AVPlayer = self.playerView?.playerLayer.player {
-                player.seek(to: .zero)
-                player.play()
-            }
-        }
+ 
     }
 }
 
