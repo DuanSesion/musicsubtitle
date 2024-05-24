@@ -1,0 +1,21 @@
+{
+  "name": "SwiftSubtitles",
+  "version": "1.0.0",
+  "summary": "A short description of SwiftSubtitles.",
+  "description": "xxxxxxx",
+  "homepage": "http://EXAMPLE/SwiftSubtitles",
+  "license": "MIT MARK",
+  "authors": {
+    "duan": "duan@qq.com"
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "source": {
+    "git": "http://xxx/SwiftSubtitles.git",
+    "tag": "1.0.0"
+  },
+  "vendored_frameworks": [
+    "SwiftSubtitles.framework"
+  ]
+}

@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-player/Pods-player-frameworks.sh
+${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
+${PODS_ROOT}/../Frameworks/SwiftSubtitles.framework

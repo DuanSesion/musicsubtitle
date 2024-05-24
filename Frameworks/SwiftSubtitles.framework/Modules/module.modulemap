@@ -1,0 +1,11 @@
+framework module SwiftSubtitles {
+  umbrella header "SwiftSubtitles-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module SwiftSubtitles.Swift {
+  header "SwiftSubtitles-Swift.h"
+  requires objc
+}

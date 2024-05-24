@@ -1,0 +1,23 @@
+PODS:
+  - SnapKit (5.7.1)
+  - SwiftSubtitles (1.0.0)
+
+DEPENDENCIES:
+  - SnapKit
+  - SwiftSubtitles (from `./Frameworks`)
+
+SPEC REPOS:
+  https://hub.yzuu.cf/CocoaPods/Specs.git:
+    - SnapKit
+
+EXTERNAL SOURCES:
+  SwiftSubtitles:
+    :path: "./Frameworks"
+
+SPEC CHECKSUMS:
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SwiftSubtitles: 096b46f20e44714218d4407f3995d6e2d4a25004
+
+PODFILE CHECKSUM: 86969abd7ddb7030bc788d8a1340af8fdde93fa8
+
+COCOAPODS: 1.14.3
