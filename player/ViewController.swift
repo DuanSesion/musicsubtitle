@@ -335,11 +335,13 @@ extension ViewController {
 
 extension ViewController {
     func getImageFrom(asset: AVAsset, at time: CMTime, size: CGSize) -> UIImage? {
+        debugPrint(MPMediaItemPropertyArtwork)
+        
         let mediaType:AVMediaType = asset.tracks.first?.mediaType ?? .audio
         if mediaType == .audio {
             let metadata = asset.metadata
             for item in metadata {
-                if item.commonKey?.rawValue == "artwork" {
+                if item.commonKey?.rawValue == MPMediaItemPropertyArtwork {
                     if let imageData = item.value as? Data, let image = UIImage(data: imageData) {
                         return image
                     }
