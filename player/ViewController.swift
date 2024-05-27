@@ -53,6 +53,8 @@ class ViewController: UIViewController {
         try? AVAudioSession.sharedInstance().setCategory(.playback)
         try? AVAudioSession.sharedInstance().setActive(true)
         view.backgroundColor = .black
+//        MPNowPlayingInfoCenter.default().re
+        
         
         let swSize = UIScreen.main.bounds.size
         let playerView:PlayerView = .init(frame: CGRect(x:( swSize.width - 200)/2, y: 88, width: 200, height: 200))
@@ -66,10 +68,10 @@ class ViewController: UIViewController {
         self.playerView = playerView
         
         guard let url = Bundle.main.path(forResource: "Charlie Puth-Look At Me Now", ofType: "mp3") else { return  }
-        let avsset = AVAsset(url: URL(fileURLWithPath: url))
+        let avsset = AVURLAsset(url: URL(fileURLWithPath: url))
         let playerItem = AVPlayerItem(asset: avsset, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
         
-        let avsset1 = AVAsset(url: URL(fileURLWithPath: url))
+        let avsset1 = AVURLAsset(url: URL(fileURLWithPath: url))
         let playerItem1 = AVPlayerItem(asset: avsset1, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
         
         
@@ -113,7 +115,141 @@ class ViewController: UIViewController {
         let image = getImageFrom(asset: avsset, at: .zero, size: .zero)
         playerView.layer.contents = image?.cgImage
         addRotationAnimation(to: playerView.layer)
+         
+        setNowPlayingMetadata()
+        
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        reset()
+        playerView?.playerLayer.player?.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
+        playerView?.playerLayer.player?.play()
+    }
+    
+    func setNowPlayingMetadata( ) {
+        guard let url = Bundle.main.path(forResource: "Charlie Puth-Look At Me Now", ofType: "mp3"),
+              let asset = playerView?.playerLayer.player?.currentItem?.asset,
+              let currentItem = playerView?.playerLayer.player?.currentItem,
+              let image = getImageFrom(asset: asset, at: .zero, size: .zero),
+              let player:AVQueuePlayer = playerView?.playerLayer.player as? AVQueuePlayer  else { return  }
+        
+        
+        let musicInfo = MPMediaItemArtwork.init(boundsSize: image.size) { size in image }
+//        let nowPlayingInfo = [
+//            MPMediaItemPropertyArtist : "Artist Name",
+//            MPMediaItemPropertyTitle : "Song Title",
+//            MPMediaItemPropertyPlaybackDuration : 230.0,
+//            MPMediaItemPropertyArtwork : musicInfo
+//        ] as [String : Any]
+//        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+      
+
+//        let playBackInfo = [
+//            MPNowPlayingInfoPropertyElapsedPlaybackTime : 150.0
+//        ]
+//        MPNowPlayingInfoCenter.default().nowPlayingInfo = playBackInfo
+  
+
+        let playPauseButton = MPRemoteCommandCenter.shared().togglePlayPauseCommand
+        playPauseButton.addTarget { event in
+            debugPrint(player.timeControlStatus == .playing, player.timeControlStatus == .paused, "暂停和播放")
+            
+            if (event.command == playPauseButton) {
+                if (player.timeControlStatus == .paused) {
+                    player.play()
+                } else {
+                    player.pause()
+                }
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        let nextTrackButton = MPRemoteCommandCenter.shared().nextTrackCommand
+        nextTrackButton.addTarget { event in
+            debugPrint(player.status, "下一首")
+            
+            if (event.command == nextTrackButton) {
+                player.advanceToNextItem()
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        let previousTrackButton = MPRemoteCommandCenter.shared().previousTrackCommand
+        previousTrackButton.addTarget { event in
+            debugPrint(player.status, "上一首")
+            if (event.command == previousTrackButton) {
+//                player.advanceToNextItem()
+                return .success
+            }
+            return .commandFailed
+        }
+
+ 
+        let remoteCommandController =  MPRemoteCommandCenter.shared()
+        remoteCommandController.previousTrackCommand.isEnabled = true
+        remoteCommandController.nextTrackCommand.isEnabled = true
+        remoteCommandController.seekForwardCommand.isEnabled = true
+//        remoteCommandController.seekForwardCommand.preferredIntervals = [15, 30, 60]
+        remoteCommandController.seekBackwardCommand.isEnabled = true
+//        remoteCommandController.seekBackwardCommand.preferredIntervals = [15, 30, 60]
+     
+
+ 
+        
+        var languageOptionGroups: [MPNowPlayingInfoLanguageOptionGroup] = []
+        var currentLanguageOptions: [MPNowPlayingInfoLanguageOption] = []
+
+        if asset.statusOfValue(forKey: ViewController.mediaSelectionKey, error: nil) == .loaded {
+            
+            // Examine each media selection group.
+            
+            for mediaCharacteristic in asset.availableMediaCharacteristicsWithMediaSelectionOptions {
+                guard mediaCharacteristic == .audible || mediaCharacteristic == .legible,
+                    let mediaSelectionGroup = asset.mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic) else { continue }
+                
+                // Make a corresponding language option group.
+                
+                let languageOptionGroup = mediaSelectionGroup.makeNowPlayingInfoLanguageOptionGroup()
+                languageOptionGroups.append(languageOptionGroup)
+                
+                // If the media selection group has a current selection,
+                // create a corresponding language option.
+                
+                if let selectedMediaOption = currentItem.currentMediaSelection.selectedMediaOption(in: mediaSelectionGroup),
+                    let currentLanguageOption = selectedMediaOption.makeNowPlayingInfoLanguageOption() {
+                    currentLanguageOptions.append(currentLanguageOption)
+                }
+            }
+        }
+        
+       
+        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+        var nowPlayingInfo = [String: Any]()
+        
+  
+        nowPlayingInfo[MPNowPlayingInfoPropertyAssetURL] = URL(fileURLWithPath: url)
+        nowPlayingInfo[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
+        nowPlayingInfo[MPNowPlayingInfoPropertyIsLiveStream] = false
+        nowPlayingInfo[MPMediaItemPropertyTitle] = "Charlie Puth-Look At Me Now"
+        nowPlayingInfo[MPMediaItemPropertyArtist] = "artist"
+        nowPlayingInfo[MPMediaItemPropertyArtwork] = musicInfo
+        nowPlayingInfo[MPMediaItemPropertyAlbumArtist] = "Artist"
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = "albumTitle"
+        
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = 180.0
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  0.0
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
+        nowPlayingInfo[MPNowPlayingInfoPropertyDefaultPlaybackRate] = 1.0
+        nowPlayingInfo[MPNowPlayingInfoPropertyCurrentLanguageOptions] = languageOptionGroups
+        nowPlayingInfo[MPNowPlayingInfoPropertyAvailableLanguageOptions] = currentLanguageOptions
+        
+        debugPrint(nowPlayingInfo)
+        
+        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
+    }
+   
 }
 
 extension ViewController {
@@ -143,7 +279,13 @@ extension ViewController {
     }
     
     func updateProgressView(_ currentTime:Float,  _ duration:Float, _ progress:Float) {
-    
+        
+        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+        var nowPlayingInfo:[String: Any]  = nowPlayingInfoCenter.nowPlayingInfo ?? [:]
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  currentTime
+        
+        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
     }
     
     func getCurrentSubtitle(at videoTime: CMTime) -> Subtitles.Cue? {// 查找当前时间点对应的字幕
@@ -166,6 +308,10 @@ extension ViewController {
             self.label.text = text
             self.animate3(animationDuration)
             
+            let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+            var nowPlayingInfo:[String: Any]  = nowPlayingInfoCenter.nowPlayingInfo ?? [:]
+            nowPlayingInfo[MPMediaItemPropertyArtist] = text
+            nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
         }
     }
     
@@ -225,10 +371,10 @@ extension ViewController {
             self?.reset()
             if change.newValue  == nil {
                 guard let url = Bundle.main.path(forResource: "Charlie Puth-Look At Me Now", ofType: "mp3") else { return  }
-                let avsset = AVAsset(url: URL(fileURLWithPath: url))
+                let avsset = AVURLAsset(url: URL(fileURLWithPath: url))
                 let playerItem = AVPlayerItem(asset: avsset, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
                 
-                let avsset1 = AVAsset(url: URL(fileURLWithPath: url))
+                let avsset1 = AVURLAsset(url: URL(fileURLWithPath: url))
                 let playerItem1 = AVPlayerItem(asset: avsset1, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
                 
                 if qPlayer.canInsert(playerItem, after: nil) {
@@ -239,21 +385,33 @@ extension ViewController {
                     qPlayer.insert(playerItem1, after: nil)
                 }
                 
+                queuePlayer.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
+                queuePlayer.play()
+                
              
             } else if let newItem = change.newValue {
                 // 新的播放项目开始播放，检查是否为最后一个项目
                 let newItem:AVPlayerItem = newItem!
                 if newItem == queuePlayer.items().last {
-                    if let firstItem = queuePlayer.items().first {
-                        // 如果是最后一个项目，当它即将结束时重新排列播放队列以实现循环
-                        DispatchQueue.main.asyncAfter(deadline: .now() + (newItem.asset.duration.seconds - queuePlayer.currentTime().seconds)) {
-                            if queuePlayer.canInsert(newItem, after: nil) {
-                                queuePlayer.insert(newItem, after: nil)
-                                queuePlayer.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
-                                queuePlayer.play()
-                            }
-                        }
+                    debugPrint(queuePlayer.items())
+                    
+                    guard let url = Bundle.main.path(forResource: "Charlie Puth-Look At Me Now", ofType: "mp3") else { return  }
+                    let avsset = AVURLAsset(url: URL(fileURLWithPath: url))
+                    let playerItem = AVPlayerItem(asset: avsset, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
+                    if queuePlayer.canInsert(playerItem, after: nil) {
+                        queuePlayer.insert(playerItem, after: nil)
                     }
+                    
+//                    if let firstItem = queuePlayer.items().first {
+//                        // 如果是最后一个项目，当它即将结束时重新排列播放队列以实现循环
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + (newItem.asset.duration.seconds - queuePlayer.currentTime().seconds)) {
+//                            if queuePlayer.canInsert(newItem, after: nil) {
+//                                queuePlayer.insert(newItem, after: nil)
+//                                queuePlayer.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
+//                                queuePlayer.play()
+//                            }
+//                        }
+//                    }
                 }
             }
         }

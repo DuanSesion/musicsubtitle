@@ -30,7 +30,7 @@ class SubtitleLabel: UILabel {
         self.isUserInteractionEnabled = true
         
         if let gradientbglayer = (self.layer as? CAGradientLayer) {
-            gradientbglayer.colors = [rgba(255, 154, 34, 1).cgColor,rgba(255, 198, 52, 1).cgColor]
+            gradientbglayer.colors = [rgba(255, 1, 34, 1).cgColor,rgba(255, 198, 52, 0.9).cgColor]
             gradientbglayer.locations = [0,1]
             gradientbglayer.startPoint = .zero
             gradientbglayer.endPoint = CGPoint(x: 0, y: 1)
