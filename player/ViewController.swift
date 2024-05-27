@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     private var currentSubtitleIndex:Int = 0
     let dispatch_queue:dispatch_queue_t = .init(label: "play.progress.subtitles.cue")
     private var currentItemObserver:NSKeyValueObservation?
+    private var playerItems:[AVPlayerItem] = []
     
     
     lazy var label: SubtitleLabel = {
@@ -74,8 +75,8 @@ class ViewController: UIViewController {
         let avsset1 = AVURLAsset(url: URL(fileURLWithPath: url))
         let playerItem1 = AVPlayerItem(asset: avsset1, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
         
-        
-        let player = AVQueuePlayer(items: [playerItem,playerItem1])
+        self.playerItems = [playerItem,playerItem1]
+        let player = AVQueuePlayer(items:  self.playerItems)
         playerView.playerLayer.player = player
         
         for track in playerItem.tracks {
@@ -180,7 +181,25 @@ class ViewController: UIViewController {
         previousTrackButton.addTarget { event in
             debugPrint(player.status, "上一首")
             if (event.command == previousTrackButton) {
-//                player.advanceToNextItem()
+                guard let current = player.currentItem, let index = self.playerItems.firstIndex(where: { item in (item == current) })  else { return  .commandFailed}
+                
+                let currentTime = player.currentTime().seconds
+                let currentItems = player.items()
+                let previousIndex = self.playerItems.count - currentItems.count - 1
+                
+                debugPrint(previousIndex,self.playerItems.count, currentItems.count, index)
+                guard currentTime < 3, previousIndex > 0, previousIndex < self.playerItems.count else { player.seek(to: .zero, toleranceBefore: .zero, toleranceAfter: .zero); return .commandFailed}
+                
+                player.removeAllItems()
+                for playerItem in self.playerItems[(previousIndex - 1)...] {
+                    if player.canInsert(playerItem, after: nil) {
+                        player.insert(playerItem, after: nil)
+                    }
+                }
+                
+                player.seek(to: .zero, toleranceBefore: .zero, toleranceAfter: .zero)
+                player.play()
+                
                 return .success
             }
             return .commandFailed
@@ -255,6 +274,8 @@ class ViewController: UIViewController {
 extension ViewController {
     func addProgressObserver(_ player:AVPlayer) {// 监听播放器当前时间 - 每秒更新0.1s/次播放进度 - DispatchQueue.main
         let timeInterval:TimeInterval = 0.1
+        debugPrint(Int64(timeInterval * Double(CMTimeScale(NSEC_PER_SEC))))
+        
         let TimeMake = CMTimeMake(value: Int64(timeInterval * Double(CMTimeScale(NSEC_PER_SEC))), timescale: CMTimeScale(NSEC_PER_SEC))
         let timeObserverToken = player.addPeriodicTimeObserver(forInterval: TimeMake, queue: dispatch_queue) { [weak self] (time) in
                 guard let weakSelf = self else { return }
@@ -372,23 +393,17 @@ extension ViewController {
         let currentItemObserver = queuePlayer.observe(\.currentItem, options: [.new]) { [weak self] (qPlayer, change) in
             self?.reset()
             if change.newValue  == nil {
-                guard let url = Bundle.main.path(forResource: "Charlie Puth-Look At Me Now", ofType: "mp3") else { return  }
-                let avsset = AVURLAsset(url: URL(fileURLWithPath: url))
-                let playerItem = AVPlayerItem(asset: avsset, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
-                
-                let avsset1 = AVURLAsset(url: URL(fileURLWithPath: url))
-                let playerItem1 = AVPlayerItem(asset: avsset1, automaticallyLoadedAssetKeys: [ViewController.mediaSelectionKey])
-                
-                if qPlayer.canInsert(playerItem, after: nil) {
-                    qPlayer.insert(playerItem, after: nil)
-                }
-                 
-                if qPlayer.canInsert(playerItem1, after: nil) {
-                    qPlayer.insert(playerItem1, after: nil)
+                guard let playerItems = self?.playerItems else { return  }
+ 
+                for item in playerItems {
+                    if qPlayer.canInsert(item, after: nil) {
+                        qPlayer.insert(item, after: nil)
+                    }
                 }
                 
-                queuePlayer.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
-                queuePlayer.play()
+                
+                qPlayer.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero)
+                qPlayer.play()
                 
              
             } else if let newItem = change.newValue {
