@@ -23,4 +23,4 @@ pod 'SwiftSubtitles', :git => "https://bgithub.xyz/DuanSesion/musicsubtitle.git"
 </p>
 
 ![(Image)](https://raw.githubusercontent.com/DuanSesion/musicsubtitle/master/Videos/WX20240524-163735@2x.png)
-![(Video)](https://raw.githubusercontent.com/DuanSesion/musicsubtitle/master/Videos/RPReplay_Final1716529431.mp4)
+![(Video)](https://github.com/DuanSesion/musicsubtitle/raw/master/Videos/RPReplay_Final1716529431.mp4)
