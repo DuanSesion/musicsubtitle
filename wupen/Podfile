@@ -1,0 +1,50 @@
+source 'https://hub.yzuu.cf/CocoaPods/Specs.git'
+
+platform :ios, '13.0'
+
+target 'wupen' do
+ 
+  use_frameworks!
+
+   pod 'Alamofire'
+   pod 'SnapKit'
+   pod 'YYText'
+   pod 'Toast-Swift'
+   pod 'ProgressHUD'
+   pod 'JKSwiftExtension'
+   
+   pod 'IQKeyboardManagerSwift'
+   pod 'WechatOpenSDK'
+   pod 'WLPhotoPicker'
+   
+   pod 'MJRefresh'
+   pod 'SDWebImage'
+   pod 'RxDataSources'
+   pod 'SwiftDate'
+   pod 'JPush' #极光推送
+   
+   pod 'DSF_QRCode'
+   pod 'AliyunOSSiOS'
+   
+   pod 'SwiftSubtitles', :path =>'./Frameworks/SwiftSubtitles' #SRT字幕解析同步框架
+   pod 'KakaJSON', :path =>'./Frameworks/KakaJSON'
+   pod 'UMeng', :path =>'./Frameworks/UMeng' #友盟
+   pod 'FSCalendar', :path =>'./Frameworks/FSCalendar'
+   pod 'SQLite.swift', :path =>'./Frameworks/SQLite'
+   pod 'FSPagerView', :path =>'./Frameworks/FSPagerView'
+   pod 'SDCycleScrollView', :path =>'./Frameworks/SDCycleScrollView'
+   
+   pod 'TXLiteAVSDK_Professional', :podspec => 'https://liteav.sdk.qcloud.com/pod/liteavsdkspec/TXLiteAVSDK_Professional.podspec'#推流直播
+   pod 'swiftScan', :git => 'https://github.com/MxABC/swiftScan.git'
+
+end
+
+post_install do |installer|
+    installer.generated_projects.each do |project|
+          project.targets.each do |target|
+              target.build_configurations.each do |config|
+                  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+               end
+          end
+   end
+end

@@ -1,0 +1,13 @@
+/* 
+  InfoPlist.strings
+  MLVB-API-Example-OC
+
+  Created by adams on 2021/4/26.
+  
+*/
+
+"CFBundleDisplayName" = "WUPEN";
+"NSCameraUsageDescription" = "WUPEN 需要訪問你的相機許可權，開啟後錄製的視頻才會有畫面";
+"NSMicrophoneUsageDescription" = "WUPEN 需要訪問你的麥克風許可權，開啟後錄製的視頻才會有聲音";
+"NSPhotoLibraryAddUsageDescription" = "WUPEN 需要訪問你的相册許可權，開啟後才能保存編輯的檔案";
+"NSPhotoLibraryUsageDescription" = "WUPEN 需要訪問你的相册許可權，開啟後才能編輯視頻檔案";

@@ -1,0 +1,175 @@
+PODS:
+  - Alamofire (5.9.1)
+  - AliyunOSSiOS (2.10.21)
+  - Differentiator (5.0.0)
+  - DSF_QRCode (18.3.0):
+    - SwiftImageReadWrite (~> 1.6.1)
+    - SwiftQRCodeGenerator (~> 2.0.2)
+  - DSFRegex (3.4.0)
+  - FSCalendar (1.0.0)
+  - FSPagerView (0.8.3)
+  - IQKeyboardManagerSwift (7.0.2)
+  - JCore (4.6.2)
+  - JKSwiftExtension (2.6.3)
+  - JPush (5.3.0):
+    - JCore (>= 2.0.0)
+  - KakaJSON (1.0.0)
+  - MJRefresh (3.7.9)
+  - ProgressHUD (14.1.1)
+  - RxCocoa (6.6.0):
+    - RxRelay (= 6.6.0)
+    - RxSwift (= 6.6.0)
+  - RxDataSources (5.0.0):
+    - Differentiator (~> 5.0)
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
+  - RxRelay (6.6.0):
+    - RxSwift (= 6.6.0)
+  - RxSwift (6.6.0)
+  - SDCycleScrollView (1.82):
+    - SDWebImage (>= 5.0.0)
+  - SDWebImage (5.19.1):
+    - SDWebImage/Core (= 5.19.1)
+  - SDWebImage/Core (5.19.1)
+  - SnapKit (5.0.1)
+  - SQLite.swift (0.15.3):
+    - SQLite.swift/standard (= 0.15.3)
+  - SQLite.swift/standard (0.15.3)
+  - SwiftDate (7.0.0)
+  - SwiftImageReadWrite (1.6.1)
+  - SwiftQRCodeGenerator (2.0.2)
+  - swiftScan (1.2.1)
+  - SwiftSubtitles (1.3.0):
+    - DSFRegex (~> 3.4.0)
+    - TinyCSV (~> 1.0.0)
+  - TinyCSV (1.0.0)
+  - Toast-Swift (5.1.1)
+  - TXLiteAVSDK_Professional (11.4.14530):
+    - TXLiteAVSDK_Professional/Professional (= 11.4.14530)
+  - TXLiteAVSDK_Professional/Professional (11.4.14530)
+  - UMeng (0.0.1)
+  - WechatOpenSDK (2.0.4)
+  - WLPhotoPicker (1.0.0):
+    - SnapKit (~> 5.0.0)
+  - YYText (1.0.7)
+
+DEPENDENCIES:
+  - Alamofire
+  - AliyunOSSiOS
+  - DSF_QRCode
+  - FSCalendar (from `./Frameworks/FSCalendar`)
+  - FSPagerView (from `./Frameworks/FSPagerView`)
+  - IQKeyboardManagerSwift
+  - JKSwiftExtension
+  - JPush
+  - KakaJSON (from `./Frameworks/KakaJSON`)
+  - MJRefresh
+  - ProgressHUD
+  - RxDataSources
+  - SDCycleScrollView (from `./Frameworks/SDCycleScrollView`)
+  - SDWebImage
+  - SnapKit
+  - SQLite.swift (from `./Frameworks/SQLite`)
+  - SwiftDate
+  - swiftScan (from `https://github.com/MxABC/swiftScan.git`)
+  - SwiftSubtitles (from `./Frameworks/SwiftSubtitles`)
+  - Toast-Swift
+  - TXLiteAVSDK_Professional (from `https://liteav.sdk.qcloud.com/pod/liteavsdkspec/TXLiteAVSDK_Professional.podspec`)
+  - UMeng (from `./Frameworks/UMeng`)
+  - WechatOpenSDK
+  - WLPhotoPicker
+  - YYText
+
+SPEC REPOS:
+  https://hub.yzuu.cf/CocoaPods/Specs.git:
+    - Alamofire
+    - AliyunOSSiOS
+    - DSF_QRCode
+    - DSFRegex
+    - IQKeyboardManagerSwift
+    - JCore
+    - JKSwiftExtension
+    - JPush
+    - MJRefresh
+    - ProgressHUD
+    - RxSwift
+    - SDWebImage
+    - SnapKit
+    - TinyCSV
+    - Toast-Swift
+    - WechatOpenSDK
+  https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
+    - Differentiator
+    - RxCocoa
+    - RxDataSources
+    - RxRelay
+    - SwiftDate
+    - SwiftImageReadWrite
+    - SwiftQRCodeGenerator
+    - WLPhotoPicker
+    - YYText
+
+EXTERNAL SOURCES:
+  FSCalendar:
+    :path: "./Frameworks/FSCalendar"
+  FSPagerView:
+    :path: "./Frameworks/FSPagerView"
+  KakaJSON:
+    :path: "./Frameworks/KakaJSON"
+  SDCycleScrollView:
+    :path: "./Frameworks/SDCycleScrollView"
+  SQLite.swift:
+    :path: "./Frameworks/SQLite"
+  swiftScan:
+    :git: https://github.com/MxABC/swiftScan.git
+  SwiftSubtitles:
+    :path: "./Frameworks/SwiftSubtitles"
+  TXLiteAVSDK_Professional:
+    :podspec: https://liteav.sdk.qcloud.com/pod/liteavsdkspec/TXLiteAVSDK_Professional.podspec
+  UMeng:
+    :path: "./Frameworks/UMeng"
+
+CHECKOUT OPTIONS:
+  swiftScan:
+    :commit: b0cc9aea11140125b75d1baaccb16c9567cdf69a
+    :git: https://github.com/MxABC/swiftScan.git
+
+SPEC CHECKSUMS:
+  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  AliyunOSSiOS: 1f091b3aeec9f7a5fd722cb511704116f2ca468d
+  Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
+  DSF_QRCode: 2e237c86f4233a10f2e2a3a8e299f3035416adb2
+  DSFRegex: d32f541b5106c52710b6525b3ac73b63f867ca49
+  FSCalendar: 79604958a976674c53bd50a64811a70d15ba9cde
+  FSPagerView: ce8178c67235ffb1610cc89141a5466a05adc2b0
+  IQKeyboardManagerSwift: d338c11a896e9f29603443700c4567e32f830c22
+  JCore: 024c73b04e110b496e93d8c127ea9cd1ed934e4c
+  JKSwiftExtension: 15eb11b8acc982ef534b1a631a4543a9a3443bbb
+  JPush: b71f497a3c1b825c7843fd97f290b05d5cd75f2e
+  KakaJSON: b5bf4902487e55f32e85fe4297be97acd44d8225
+  MJRefresh: ff9e531227924c84ce459338414550a05d2aea78
+  ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
+  RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
+  RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
+  RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
+  RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
+  SDCycleScrollView: 3b643aa245fc3bc1027aa5c3b9163496995925e9
+  SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SQLite.swift: 8d054987f02728cc912b0eb5a9659650573a65a2
+  SwiftDate: bbc26e26fc8c0c33fbee8c140c5e8a68293a148a
+  SwiftImageReadWrite: 69f6521a74fdddbb61b2cc844150ec64de2cb4c7
+  SwiftQRCodeGenerator: cc02fed209335064d0b0dd61b2a0874b9bc6bd5a
+  swiftScan: 0849e7d7c1c641384767a573ee8cb90b88d1ddd9
+  SwiftSubtitles: 98917f37de78e4e1251c39a02f19a6e2db67d46f
+  TinyCSV: ebd3505643275ac6b62cf41e3257f2ac086d8285
+  Toast-Swift: 7a03a532afe3a560d4044bc7c237e2864d295173
+  TXLiteAVSDK_Professional: 2fde63cb7ed1338bac4b26a229d20f1ca6a1b6c9
+  UMeng: 3d93b006fc3ff36ba12156f218b37c676cfa32c2
+  WechatOpenSDK: 290989072e87b79d52225a01bb4e5e58f6f88593
+  WLPhotoPicker: 093f90ef0fdee4a28efc4e51e18379f6101e6dee
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+
+PODFILE CHECKSUM: aff5ed516b131dc6ef4165f0ef6efeb4d6cf21de
+
+COCOAPODS: 1.14.3

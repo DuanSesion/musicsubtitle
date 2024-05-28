@@ -1,0 +1,13 @@
+/* 
+  InfoPlist.strings
+  MLVB-API-Example-OC
+
+  Created by adams on 2021/4/26.
+  
+*/
+
+"CFBundleDisplayName" = "WUPEN";
+"NSCameraUsageDescription" = "WUPEN Access to your camera is required, and the recorded video will only have visuals when enabled";
+"NSMicrophoneUsageDescription" = "WUPEN Access to your microphone is required for recorded videos to have sound only when enabled";
+"NSPhotoLibraryAddUsageDescription" = "WUPEN I need to access your photo album permission to save edited files after opening it";
+"NSPhotoLibraryUsageDescription" = "WUPEN I need to access your photo album permission before I can edit video files";
